@@ -1,0 +1,43 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PlantPal - My Jade Plant</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="plant-card">
+        <div class="plant-header">
+            <h2 id="plant-name">Jade Plant</h2>
+            <p id="plant-species">Crassula ovata</p>
+        </div>
+        
+        <div class="plant-status">
+            <div class="status-item">
+                <span>Water Status:</span>
+                <!-- 这个 status-indicator 会根据JS改变颜色 -->
+                <span class="status-indicator" id="water-status">Checking...</span>
+            </div>
+            <div class="status-item">
+                <span>Sunlight Status:</span>
+                <span class="status-indicator" id="sunlight-status">Checking...</span>
+            </div>
+        </div>
+
+        <div class="plant-info">
+            <p>Last Watered: <strong id="last-watered-date">2025-09-20</strong></p>
+            <p>Today's Sunlight: <strong id="sunlight-hours">6 hours</strong></p>
+        </div>
+
+        <div class="plant-actions">
+            <button id="log-water-btn">Log Watering</button>
+            <button id="log-sunlight-btn">Add 1hr Sunlight</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
