@@ -1,0 +1,76 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f4f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.plant-card {
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    width: 320px;
+    padding: 20px;
+}
+
+.plant-header h2 {
+    margin: 0;
+    color: #2e7d32;
+}
+
+.plant-header p {
+    margin: 5px 0 20px;
+    color: #666;
+    font-style: italic;
+}
+
+.plant-status {
+    margin-bottom: 20px;
+}
+
+.status-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+}
+
+/* --- 关键的状态指示灯样式 --- */
+.status-indicator {
+    padding: 5px 10px;
+    border-radius: 12px;
+    color: white;
+    font-weight: bold;
+}
+
+.status-good { background-color: #4caf50; } /* 绿色 - 状态良好 */
+.status-attention { background-color: #ff9800; } /* 橙色 - 需要注意 */
+.status-urgent { background-color: #f44336; } /* 红色 - 紧急 */
+/* --- 关键样式结束 --- */
+
+.plant-info p {
+    margin: 10px 0;
+}
+
+.plant-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.plant-actions button {
+    background-color: #2e7d32;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.plant-actions button:hover {
+    background-color: #1b5e20;
+}
