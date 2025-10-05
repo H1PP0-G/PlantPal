@@ -1,76 +1,134 @@
+/* --- Global Styles & Variables --- */
+:root {
+    --primary-color: #2e7d32;
+    --primary-light: #e8f5e9;
+    --secondary-color: #6c757d;
+    --background-color: #f8f9fa;
+    --card-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    --border-radius: 16px;
+}
+
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f4f0;
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    background-image: linear-gradient(rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.85)), url('../public/background.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* --- Navbar --- */
+.navbar {
+    background-color: white;
+    padding: 1rem 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+.navbar .container { display: flex; justify-content: space-between; align-items: center; }
+.logo { font-size: 1.5rem; font-weight: 700; color: var(--primary-color); text-decoration: none; }
+.nav-links { list-style: none; margin: 0; padding: 0; display: flex; gap: 1.5rem; }
+.nav-links a { text-decoration: none; color: var(--secondary-color); font-weight: 600; cursor: pointer; transition: color 0.3s ease; }
+.nav-links a:hover, .nav-links a.active { color: var(--primary-color); }
+
+/* --- Main Content --- */
+.main-content {
+    flex-grow: 1;
+    padding: 3rem 0;
+}
+
+/* --- Plant Grid Layout --- */
+.plant-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
+}
+
+/* --- Plant Card --- */
+.plant-card {
+    background-color: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--card-shadow);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.plant-card:hover { transform: translateY(-5px); box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15); }
+.plant-card img { width: 100%; height: 200px; object-fit: cover; }
+.plant-details { padding: 1.5rem; display: flex; flex-direction: column; flex-grow: 1; }
+.plant-header h2 { margin: 0; color: var(--primary-color); font-size: 1.5rem; }
+.plant-header p { margin: 5px 0 20px; color: var(--secondary-color); font-style: italic; font-size: 0.9rem; }
+.plant-status { margin-bottom: 20px; }
+.status-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #eee; }
+.status-item:last-child { border-bottom: none; }
+.status-indicator { padding: 5px 10px; border-radius: 12px; color: white; font-weight: 600; font-size: 0.8rem; }
+.status-good { background-color: #4caf50; }
+.status-attention { background-color: #ff9800; }
+.status-urgent { background-color: #f44336; }
+.plant-info { background-color: var(--primary-light); border-radius: 8px; padding: 12px; margin-bottom: 20px; }
+.plant-info p { margin: 6px 0; font-size: 0.9rem; }
+.plant-actions { display: flex; gap: 1rem; margin-top: auto; }
+.plant-actions button { flex-grow: 1; background-color: var(--primary-color); color: white; border: none; padding: 10px 15px; border-radius: 8px; cursor: pointer; font-weight: 600; transition: background-color 0.3s ease; }
+.plant-actions button:hover { background-color: #1b5e20; }
+
+/* --- Modal (Add Plant Form) Styles --- */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    z-index: 1000;
+    opacity: 1;
+    transition: opacity 0.3s ease;
 }
-
-.plant-card {
-    background-color: white;
-    border-radius: 15px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    width: 320px;
-    padding: 20px;
+.modal-overlay.hidden {
+    opacity: 0;
+    pointer-events: none;
 }
-
-.plant-header h2 {
-    margin: 0;
-    color: #2e7d32;
+.modal-content {
+    background: white;
+    padding: 2rem;
+    border-radius: var(--border-radius);
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    transform: scale(1);
+    transition: transform 0.3s ease;
 }
-
-.plant-header p {
-    margin: 5px 0 20px;
-    color: #666;
-    font-style: italic;
+.modal-overlay.hidden .modal-content {
+    transform: scale(0.9);
 }
+.modal-content h2 { margin-top: 0; color: var(--primary-color); }
+.form-group { margin-bottom: 1rem; }
+.form-group label { display: block; margin-bottom: 0.5rem; font-weight: 600; }
+.form-group input, .form-group select { width: 100%; padding: 0.75rem; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; }
+.form-actions { display: flex; justify-content: flex-end; gap: 1rem; margin-top: 1.5rem; }
+.form-actions button { padding: 10px 20px; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; }
+.form-actions button[type="submit"] { background-color: var(--primary-color); color: white; }
+.form-actions button[type="button"] { background-color: #e9ecef; color: #333; }
 
-.plant-status {
-    margin-bottom: 20px;
-}
-
-.status-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 0;
-    border-bottom: 1px solid #eee;
-}
-
-/* --- 关键的状态指示灯样式 --- */
-.status-indicator {
-    padding: 5px 10px;
-    border-radius: 12px;
+/* --- Footer --- */
+.footer {
+    background-color: #343a40;
     color: white;
-    font-weight: bold;
-}
-
-.status-good { background-color: #4caf50; } /* 绿色 - 状态良好 */
-.status-attention { background-color: #ff9800; } /* 橙色 - 需要注意 */
-.status-urgent { background-color: #f44336; } /* 红色 - 紧急 */
-/* --- 关键样式结束 --- */
-
-.plant-info p {
-    margin: 10px 0;
-}
-
-.plant-actions {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
-}
-
-.plant-actions button {
-    background-color: #2e7d32;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.2s;
-}
-
-.plant-actions button:hover {
-    background-color: #1b5e20;
+    padding: 1.5rem 0;
+    text-align: center;
+    margin-top: auto;
 }
