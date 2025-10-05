@@ -20,14 +20,7 @@ PlantPal is a clean, user-friendly front-end web application designed to solve t
 
 This project serves as a practical assessment for the **ISYS3001 - Managing Software Development** course. It is not only a functional application but also a comprehensive showcase of modern software development management practices, including version control, branching strategies, continuous integration, and procurement management.
 
-##  Preview
 
-<!-- Make sure this path is correct. You'll need to create a `screenshots` folder in your repo and upload your image. -->
-![PlantPal Application Screenshot](https://raw.githubusercontent.com/H1PP0-G/PlantPal/main/screenshots/demo.png)
-
-*A user interface showcasing the plant status cards and interactive features.*
-
----
 
 ##  Built With
 
