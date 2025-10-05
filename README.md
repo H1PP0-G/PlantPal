@@ -1,9 +1,7 @@
 # PlantPal
 A web app to help plant lovers manage and track their plants' care activities.
 <div align="center">
-  <br />
-  <img src="https://raw.githubusercontent.com/H1PP0-G/PlantPal/main/public/favicon.ico" alt="PlantPal Logo" width="100">
-  <br />
+ 
 
   <h1 align="center">🌱 PlantPal - Smart Plant Care Assistant</h1>
 
@@ -12,11 +10,7 @@ A web app to help plant lovers manage and track their plants' care activities.
     <br />
     <a href="https://github.com/H1PP0-G/PlantPal"><strong>Explore the docs »</strong></a>
     <br />
-    <br />
-    <!-- IMPORTANT: Please replace the '#' with your actual Vercel deployment URL once it's live! -->
-    <a href="#"><strong>➡️ View Live Demo</strong></a>
-  </p>
-</div>
+
 
 ---
 
@@ -102,13 +96,13 @@ This project adheres to a systematic configuration management plan and developme
 
 ---
 
-## 📄 License
+##  License
 
 Distributed under the MIT License.
 
 ---
 
-## 👨‍💻 Author
+##  Author
 
 **WenboHe**
 
