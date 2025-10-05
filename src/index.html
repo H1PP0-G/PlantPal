@@ -1,42 +1,72 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PlantPal - My Jade Plant</title>
+    <title>PlantPal - Your Smart Plant Companion</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <div class="plant-card">
-        <div class="plant-header">
-            <h2 id="plant-name">Jade Plant</h2>
-            <p id="plant-species">Crassula ovata</p>
+    <nav class="navbar">
+        <div class="container">
+            <a href="#" class="logo">🌱 PlantPal</a>
+            <ul class="nav-links">
+                <li><a href="#" id="my-plants-link" class="active">My Plants</a></li>
+                <li><a href="#" id="add-new-link">Add New</a></li>
+            </ul>
         </div>
-        
-        <div class="plant-status">
-            <div class="status-item">
-                <span>Water Status:</span>
-                <!-- 这个 status-indicator 会根据JS改变颜色 -->
-                <span class="status-indicator" id="water-status">Checking...</span>
-            </div>
-            <div class="status-item">
-                <span>Sunlight Status:</span>
-                <span class="status-indicator" id="sunlight-status">Checking...</span>
-            </div>
-        </div>
+    </nav>
 
-        <div class="plant-info">
-            <p>Last Watered: <strong id="last-watered-date">2025-09-20</strong></p>
-            <p>Today's Sunlight: <strong id="sunlight-hours">6 hours</strong></p>
+    <main class="main-content">
+        <div class="container">
+            <div id="plant-grid" class="plant-grid">
+                <!-- 植物卡片将由JavaScript动态插入到这里 -->
+            </div>
         </div>
+    </main>
 
-        <div class="plant-actions">
-            <button id="log-water-btn">Log Watering</button>
-            <button id="log-sunlight-btn">Add 1hr Sunlight</button>
+    <!-- 添加新植物的模态框 (默认隐藏) -->
+    <div id="add-plant-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <h2>Add a New Plant</h2>
+            <form id="add-plant-form">
+                <div class="form-group">
+                    <label for="plant-name-input">Plant Name</label>
+                    <input type="text" id="plant-name-input" placeholder="e.g., Living Room Fern" required>
+                </div>
+                <div class="form-group">
+                    <label for="plant-species-input">Species</label>
+                    <input type="text" id="plant-species-input" placeholder="e.g., Nephrolepis exaltata" required>
+                </div>
+                <div class="form-group">
+                    <label for="plant-image-select">Choose an Image</label>
+                    <select id="plant-image-select">
+                        <option value="jade-plant.jpg">Jade Plant</option>
+                        <option value="snake-plant.jpg">Snake Plant</option>
+                        <option value="aloe-vera.jpg">Aloe Vera</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="plant-sunlight-input">Minimum Daily Sunlight (hours)</label>
+                    <input type="number" id="plant-sunlight-input" value="5" min="0" required>
+                </div>
+                <div class="form-actions">
+                    <button type="button" id="cancel-add-plant-btn">Cancel</button>
+                    <button type="submit">Add Plant</button>
+                </div>
+            </form>
         </div>
     </div>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 PlantPal Project. All Rights Reserved.</p>
+        </div>
+    </footer>
 
     <script src="script.js"></script>
 </body>

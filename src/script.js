@@ -1,74 +1,162 @@
-// 当整个页面加载完毕后执行
 document.addEventListener('DOMContentLoaded', () => {
-
-    // 1. 模拟从数据库获取的植物数据
-    // 在真实应用中，这些数据会通过API获取
-    const plantData = {
-        name: "Jade Plant",
-        species: "Crassula ovata",
-        lastWatered: "2025-09-20T10:00:00Z", // 上次浇水日期 (ISO 格式)
-        sunlightHoursToday: 6,
-        // --- 养护规则 ---
-        wateringIntervalDays: 7, // 每7天浇一次水
-        minSunlightHours: 5      // 每天至少需要5小时光照
+    // --- STATE ---
+    // The single source of truth for our application's data
+    const state = {
+        plants: [
+            { id: 1, name: "Jade Plant", species: "Crassula ovata", image: "jade-plant.jpg", lastWatered: "2025-09-25T10:00:00Z", wateringInterval: 7, sunlightHoursToday: 6, minSunlightHours: 5 },
+            { id: 2, name: "Snake Plant", species: "Dracaena trifasciata", image: "snake-plant.jpg", lastWatered: "2025-09-20T10:00:00Z", wateringInterval: 14, sunlightHoursToday: 3, minSunlightHours: 4 }
+        ]
     };
 
-    // 2. 获取HTML中需要操作的元素
-    const waterStatusEl = document.getElementById('water-status');
-    const sunlightStatusEl = document.getElementById('sunlight-status');
-    const lastWateredDateEl = document.getElementById('last-watered-date');
-    const sunlightHoursEl = document.getElementById('sunlight-hours');
+    // --- SELECTORS ---
+    // Cache all the DOM elements we need to interact with
+    const selectors = {
+        plantGrid: document.getElementById('plant-grid'),
+        addNewLink: document.getElementById('add-new-link'),
+        modal: document.getElementById('add-plant-modal'),
+        cancelBtn: document.getElementById('cancel-add-plant-btn'),
+        addPlantForm: document.getElementById('add-plant-form')
+    };
 
-    // 3. 核心逻辑函数：更新植物状态
-    function updatePlantStatus() {
-        // --- 浇水逻辑 ---
-        const lastWateredDate = new Date(plantData.lastWatered);
+    // --- TEMPLATES ---
+    // A function to generate the HTML for a single plant card based on its data
+    const createPlantCardHTML = (plant) => {
+        // --- Watering Logic ---
+        const lastWateredDate = new Date(plant.lastWatered);
         const today = new Date();
-        // 计算上次浇水到现在过去了多少天
         const daysSinceWatered = (today - lastWateredDate) / (1000 * 60 * 60 * 24);
 
-        // 清除旧的样式
-        waterStatusEl.className = 'status-indicator'; 
-
-        if (daysSinceWatered > plantData.wateringIntervalDays + 2) {
-            waterStatusEl.textContent = 'Urgent!';
-            waterStatusEl.classList.add('status-urgent'); // 紧急（红色）
-        } else if (daysSinceWatered >= plantData.wateringIntervalDays) {
-            waterStatusEl.textContent = 'Needs Water';
-            waterStatusEl.classList.add('status-attention'); // 需要注意（橙色）
-        } else {
-            waterStatusEl.textContent = 'Good';
-            waterStatusEl.classList.add('status-good'); // 良好（绿色）
+        let waterStatusClass = 'status-good';
+        let waterStatusText = 'Good';
+        if (daysSinceWatered > plant.wateringInterval + 2) {
+            waterStatusClass = 'status-urgent';
+            waterStatusText = 'Urgent!';
+        } else if (daysSinceWatered >= plant.wateringInterval) {
+            waterStatusClass = 'status-attention';
+            waterStatusText = 'Needs Water';
         }
 
-        // --- 阳光逻辑 ---
-        sunlightStatusEl.className = 'status-indicator';
-
-        if (plantData.sunlightHoursToday < plantData.minSunlightHours) {
-            sunlightStatusEl.textContent = 'Needs Sun';
-            sunlightStatusEl.classList.add('status-attention'); // 需要注意（橙色）
-        } else {
-            sunlightStatusEl.textContent = 'Good';
-            sunlightStatusEl.classList.add('status-good'); // 良好（绿色）
+        // --- Sunlight Logic ---
+        let sunlightStatusClass = 'status-good';
+        let sunlightStatusText = 'Good';
+        if (plant.sunlightHoursToday < plant.minSunlightHours) {
+            sunlightStatusClass = 'status-attention';
+            sunlightStatusText = 'Needs Sun';
         }
 
-        // --- 更新页面显示的文本信息 ---
-        lastWateredDateEl.textContent = lastWateredDate.toLocaleDateString();
-        sunlightHoursEl.textContent = `${plantData.sunlightHoursToday} hours`;
-    }
+        return `
+            <div class="plant-card" data-plant-id="${plant.id}">
+                <div class="plant-image">
+                    <img src="../public/${plant.image}" alt="${plant.name}">
+                </div>
+                <div class="plant-details">
+                    <div class="plant-header">
+                        <h2>${plant.name}</h2>
+                        <p>${plant.species}</p>
+                    </div>
+                    <div class="plant-status">
+                        <div class="status-item">
+                            <span>💧 Water Status:</span>
+                            <span class="status-indicator ${waterStatusClass}">${waterStatusText}</span>
+                        </div>
+                        <div class="status-item">
+                            <span>☀️ Sunlight Status:</span>
+                            <span class="status-indicator ${sunlightStatusClass}">${sunlightStatusText}</span>
+                        </div>
+                    </div>
+                    <div class="plant-info">
+                        <p>Last Watered: <strong>${lastWateredDate.toLocaleDateString()}</strong></p>
+                        <p>Today's Sunlight: <strong>${plant.sunlightHoursToday} hours</strong></p>
+                    </div>
+                    <div class="plant-actions">
+                        <button class="log-water-btn">Log Watering</button>
+                        <button class="add-sunlight-btn">Add 1hr Sunlight</button>
+                    </div>
+                </div>
+            </div>
+        `;
+    };
 
-    // 4. 为按钮添加事件监听器 (暂时用 alert 模拟)
-    document.getElementById('log-water-btn').addEventListener('click', () => {
-        alert("Watering logged! (This would update the database in a real app)");
-        // 在真实应用中，这里会更新 plantData.lastWatered 并重新调用 updatePlantStatus()
+    // --- RENDER FUNCTION ---
+    // Renders all plants from the state into the DOM
+    const render = () => {
+        selectors.plantGrid.innerHTML = '';
+        state.plants.forEach(plant => {
+            const cardHTML = createPlantCardHTML(plant);
+            selectors.plantGrid.insertAdjacentHTML('beforeend', cardHTML);
+        });
+    };
+
+    // --- EVENT HANDLERS ---
+    const handleLogWatering = (plantId) => {
+        const plant = state.plants.find(p => p.id === plantId);
+        if (plant) {
+            plant.lastWatered = new Date().toISOString();
+            render();
+        }
+    };
+    
+    const handleAddSunlight = (plantId) => {
+        const plant = state.plants.find(p => p.id === plantId);
+        if (plant) {
+            plant.sunlightHoursToday += 1;
+            render();
+        }
+    };
+
+    const handleAddNewPlant = (event) => {
+        event.preventDefault();
+        const newPlant = {
+            id: Date.now(),
+            name: document.getElementById('plant-name-input').value,
+            species: document.getElementById('plant-species-input').value,
+            image: document.getElementById('plant-image-select').value,
+            lastWatered: new Date().toISOString(),
+            wateringInterval: 7,
+            sunlightHoursToday: 0,
+            minSunlightHours: parseInt(document.getElementById('plant-sunlight-input').value)
+        };
+        state.plants.push(newPlant);
+        render();
+        toggleModal(false);
+        selectors.addPlantForm.reset();
+    };
+
+    const toggleModal = (show) => {
+        if (show) {
+            selectors.modal.classList.remove('hidden');
+        } else {
+            selectors.modal.classList.add('hidden');
+        }
+    };
+
+    // --- EVENT LISTENERS SETUP ---
+    // Use a single event listener on the grid for better performance (Event Delegation)
+    selectors.plantGrid.addEventListener('click', (event) => {
+        const card = event.target.closest('.plant-card');
+        if (!card) return;
+
+        const plantId = parseInt(card.dataset.plantId);
+
+        if (event.target.classList.contains('log-water-btn')) {
+            handleLogWatering(plantId);
+        }
+
+        if (event.target.classList.contains('add-sunlight-btn')) {
+            handleAddSunlight(plantId);
+        }
     });
 
-    document.getElementById('log-sunlight-btn').addEventListener('click', () => {
-        alert("Sunlight logged! (This would update the database in a real app)");
-        // 在真实应用中，这里会更新 plantData.sunlightHoursToday 并重新调用 updatePlantStatus()
+    // Listeners for modal controls
+    selectors.addNewLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        toggleModal(true);
     });
+    selectors.cancelBtn.addEventListener('click', () => toggleModal(false));
+    selectors.addPlantForm.addEventListener('submit', handleAddNewPlant);
 
 
-    // 5. 页面首次加载时，立即执行一次状态更新
-    updatePlantStatus();
+    // --- INITIALIZATION ---
+    console.log("PlantPal App Initialized!");
+    render(); // Initial render of all plants when the page loads
 });
